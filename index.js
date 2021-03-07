@@ -11,6 +11,7 @@ global.__dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let currentIp = "";
 const webhookUrl = process.env.WEBHOOK_URL;
+const port = process.env.PORT;
 
 const ipifyUrl = "https://api.ipify.org?format=json";
 const checkInterval = 15000;
@@ -28,7 +29,7 @@ const assignIp = async () => {
 const send = () => {
   const data = {
     username: "IP Bot",
-    content: `The current server IP is **${currentIp}**`,
+    content: `The current server IP is **${currentIp}** and the port is **${port}**`,
   };
   axios.post(webhookUrl, data);
 };
