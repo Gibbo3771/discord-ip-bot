@@ -1,13 +1,16 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import axios from "axios";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { loadWebhooksFromFile } from "./config/webhooks.js";
 
 // Some globals to setup
 global.__dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let currentIp = "";
+const webhookUrl = process.env.WEBHOOK_URL;
 
 const ipifyUrl = "https://api.ipify.org?format=json";
 const checkInterval = 15000;
@@ -27,10 +30,7 @@ const send = () => {
     username: "IP Bot",
     content: `The current server IP is **${currentIp}**`,
   };
-  const webhooks = loadWebhooksFromFile();
-  for (const url of webhooks.urls) {
-    axios.post(url, data);
-  }
+  axios.post(webhookUrl, data);
 };
 
 const writeKnownIpToCache = () => {
